@@ -265,14 +265,18 @@ Ipops = ['NGF1',                            # L1
 #------------------------------------------------------------------------------
 
 ### From M1 detailed netParams.py
-netParams.synMechParams['NMDA'] = {'mod': 'MyExp2SynNMDABB', 'tau1NMDA': 15, 'tau2NMDA': 150, 'e': 0}
+netParams.synMechParams['NMDA'] = {'mod': 'MyExp2SynNMDABB', 'tau1NMDA': 15, 'tau2NMDA': 150,'e': 0}
 netParams.synMechParams['AMPA'] = {'mod':'MyExp2SynBB', 'tau1': 0.05, 'tau2': 5.3*cfg.AMPATau2Factor, 'e': 0}
 netParams.synMechParams['GABAB'] = {'mod':'MyExp2SynBB', 'tau1': 3.5, 'tau2': 260.9, 'e': -93}
 netParams.synMechParams['GABAA'] = {'mod':'MyExp2SynBB', 'tau1': 0.07, 'tau2': 18.2, 'e': -80}
 netParams.synMechParams['GABAA_VIP'] = {'mod':'MyExp2SynBB', 'tau1': 0.3, 'tau2': 6.4, 'e': -80}  # Pi et al 2013
 netParams.synMechParams['GABAASlow'] = {'mod': 'MyExp2SynBB','tau1': 2, 'tau2': 100, 'e': -80}
 netParams.synMechParams['GABAASlowSlow'] = {'mod': 'MyExp2SynBB', 'tau1': 200, 'tau2': 400, 'e': -80}
+netParams.synMechParams['NMDA_PV'] = {'mod': 'MyExp2SynNMDABB', 'tau1NMDA': 15, 'tau2NMDA': 150, 'sNMDAmax': cfg.NMDAmax, 'e': 0}
 
+
+
+EPVSynMech = ['AMPA', 'NMDA_PV']
 ESynMech = ['AMPA', 'NMDA']
 SOMESynMech = ['GABAASlow','GABAB']
 SOMISynMech = ['GABAASlow']
@@ -330,6 +334,8 @@ if cfg.addConn and cfg.EIGain > 0.0:
         for post in Ipops:
             for postType in Itypes:
                 if postType in post: # only create rule if celltype matches pop
+                    if 'PV' in post:curr_mech=EPVSynMech
+                    else:           curr_mech=ESynMech
                     for l in layerGainLabels: # used to tune each layer group independently
                         scaleFactor = 1.0
                         if connDataSource['E->E/I'] in ['Allen_V1', 'Allen_custom']:
@@ -353,16 +359,17 @@ if cfg.addConn and cfg.EIGain > 0.0:
                                 scaleFactor = cfg.L4L3NGF#25
                             elif post=='VIP3':
                                 scaleFactor = cfg.L4L3VIP#25
-                        netParams.connParams['EI_'+pre+'_'+post+'_'+postType+'_'+l] = {
-                            'preConds': {'pop': pre},
-                            'postConds': {'pop': post, 'cellType': postType, 'ynorm': layer[l]},
-                            'synMech': ESynMech,
-                            'probability': prob,
-                            'weight': wmat[pre][post] * cfg.EIGain * cfg.EICellTypeGain[postType] * cfg.EILayerGain[l] * cfg.EIPopGain[post]*scaleFactor,
-                            'synMechWeightFactor': synWeightFactor,
-                            'delay': 'defaultDelay+dist_3D/propVelocity',
-                            'synsPerConn': 1,
-                            'sec': 'proximal'}
+                    netParams.connParams['EI_'+pre+'_'+post+'_'+postType+'_'+l] = {
+                        'preConds': {'pop': pre},
+                        'postConds': {'pop': post, 'cellType': postType, 'ynorm': layer[l]},
+                        # 'synMech': ESynMech,
+                        'synMech': curr_mech,
+                        'probability': prob,
+                        'weight': wmat[pre][post] * cfg.EIGain * cfg.EICellTypeGain[postType] * cfg.EILayerGain[l] * cfg.EIPopGain[post]*scaleFactor,
+                        'synMechWeightFactor': synWeightFactor,
+                        'delay': 'defaultDelay+dist_3D/propVelocity',
+                        'synsPerConn': 1,
+                        'sec': 'proximal'}
 
 
 # cfg.NMDARfactor * wmat[pre][post] * cfg.EIGain * cfg.EICellTypeGain[postType] * cfg.EILayerGain[l]]

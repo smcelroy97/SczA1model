@@ -85,7 +85,7 @@ cfg.saveCellConns = False
 # Analysis and plotting
 # -----------------------------------------------------------------------------
 
-# cfg.analysis['plotTraces'] = {'include': [(pop, 0) for pop in cfg.allpops], 'oneFigPer': 'trace', 'overlay': True, 'saveFig': True, 'showFig': False, 'figSize':(12,8)} #[(pop,0) for pop in alltypes]		## Seen in M1 cfg.py (line 68)
+cfg.analysis['plotTraces'] = {'include': [(pop, 0) for pop in cfg.allpops], 'oneFigPer': 'trace', 'overlay': True, 'saveFig': '/Users/scottmcelroy/Desktop/traces2.png', 'showFig': False, 'figSize':(12,8)} #[(pop,0) for pop in alltypes]		## Seen in M1 cfg.py (line 68)
 # cfg.analysis['plotRaster'] = {'include': cfg.allpops, 'saveFig': True, 'showFig': True, 'popRates': True,
 #                               'orderInverse': True, 'timeRange': [0,cfg.duration], 'figSize': (14,12), 'lw': 0.3,
 #                               'markerSize': 3, 'marker': '.', 'dpi': 300}      	## Plot a raster
@@ -230,6 +230,10 @@ cfg.addSubConn = 1
 cfg.alterSyn = 0
 cfg.alterSyn2 = 0
 cfg.alterSyn3 = 0
+
+# CxE --> PV NMDA alterations
+cfg.NMDAmax = 1e9 # sets the maximal NMDA conductance - Default is 1e9
+
 
 # full weight conn matrix
 with open('conn/conn.pkl', 'rb') as fileObj: connData = pickle.load(fileObj)

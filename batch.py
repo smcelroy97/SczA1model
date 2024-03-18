@@ -14,7 +14,7 @@ import numpy as np
 # 40 Hz ASSR optimization
 # ----------------------------------------------------------------------------------------------
 
-def assr_batch_grid(filename):
+def scz_batch_grid(filename):
     params = specs.ODict()
 
     if not filename:
@@ -27,8 +27,8 @@ def assr_batch_grid(filename):
     cfgLoad2 = cfgLoad
 
     # #### SET weights####
-    params[('thalL1NGF')] = [0.5, 1.0, 1.5]
-    params[('L4L3E')] = [2.0, 2.5]
+    params[('NMDAmax')] = [8e8, 6e8]
+
 
     #### GROUPED PARAMS ####
     groupedParams = []
@@ -95,7 +95,7 @@ def assr_batch_grid(filename):
 def setRunCfg(b, type='hpc_sge'):
     if type == 'hpc_sge':
         b.runCfg = {'type': 'hpc_sge', # for downstate HPC
-                    'jobName': 'smc_ASSR_batch', # label for job
+                    'jobName': 'smc_batch', # label for job
                     'cores': 60, # give 60 cores here
                     'script': 'init.py', # what you normally run
                     'vmem': '256G', # or however much memory you need
@@ -131,9 +131,9 @@ if __name__ == '__main__':
 
 
     #b = assr_batch('data/v34_batch25/trial_2142/trial_2142_cfg.json')
-    b = assr_batch_grid('data/v34_batch25/trial_2142/trial_2142_cfg.json')
+    b = scz_batch_grid('data/v34_batch25/trial_2142/trial_2142_cfg.json')
 
-    b.batchLabel = 'ASSR_grid_0310'
+    b.batchLabel = 'Scz_grid_0318'
     b.saveFolder = 'data/'+b.batchLabel
 
     setRunCfg(b, 'hpc_sge')
