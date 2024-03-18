@@ -1,1 +1,1 @@
-# SczA1model
+# A1model
