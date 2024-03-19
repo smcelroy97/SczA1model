@@ -276,7 +276,7 @@ netParams.synMechParams['NMDA_PV'] = {'mod': 'MyExp2SynNMDABB', 'tau1NMDA': 15, 
 
 
 
-EPVSynMech = ['AMPA', 'NMDA_PV']
+EScz = ['AMPA', 'NMDA_PV']
 ESynMech = ['AMPA', 'NMDA']
 SOMESynMech = ['GABAASlow','GABAB']
 SOMISynMech = ['GABAASlow']
@@ -337,7 +337,7 @@ if cfg.addConn and cfg.EIGain > 0.0:
                     for l in layerGainLabels: # used to tune each layer group independently
                         scaleFactor = 1.0
                         if 'PV' in post:
-                            curr_mech = EPVSynMech
+                            curr_mech=EScz
                         else:
                             curr_mech=ESynMech
                         if connDataSource['E->E/I'] in ['Allen_V1', 'Allen_custom']:
