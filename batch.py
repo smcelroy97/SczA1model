@@ -99,7 +99,7 @@ def setRunCfg(b, type='hpc_sge'):
                     'cores': 60, # give 60 cores here
                     'script': 'init.py', # what you normally run
                     'vmem': '256G', # or however much memory you need
-                    'walltime': '2:00:00', # make 2 hours or something
+                    'walltime': '3:00:00', # make 2 hours or something
                     'skip': True}
     elif type == 'hpc_slurm_expanse':
         b.runCfg = {'type': 'hpc_slurm',
