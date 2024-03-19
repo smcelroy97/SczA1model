@@ -334,10 +334,12 @@ if cfg.addConn and cfg.EIGain > 0.0:
         for post in Ipops:
             for postType in Itypes:
                 if postType in post: # only create rule if celltype matches pop
-                    if 'PV' in post:curr_mech=EPVSynMech
-                    else:           curr_mech=ESynMech
                     for l in layerGainLabels: # used to tune each layer group independently
                         scaleFactor = 1.0
+                        if 'PV' in post:
+                            curr_mech = EPVSynMech
+                        else:
+                            curr_mech=ESynMech
                         if connDataSource['E->E/I'] in ['Allen_V1', 'Allen_custom']:
                             prob = '%f * exp(-dist_2D/%f)' % (pmat[pre][post], lmat[pre][post])
                         else:
@@ -347,7 +349,7 @@ if cfg.addConn and cfg.EIGain > 0.0:
                         elif 'PV' in post:
                             synWeightFactor = cfg.synWeightFractionEI_CustomCort
                         else:
-                            synWeightFactor = cfg.synWeightFractionEI #cfg.synWeightFractionEI_CustomCort  #cfg.synWeightFractionEI
+                            synWeightFactor = cfg.synWeightFractionEI
                         if 'NGF1' in post:
                             scaleFactor = cfg.ENGF1
                         if pre=='ITS4' or pre=='ITP4':
