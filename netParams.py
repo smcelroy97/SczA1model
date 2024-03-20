@@ -272,7 +272,7 @@ netParams.synMechParams['GABAA'] = {'mod':'MyExp2SynBB', 'tau1': 0.07, 'tau2': 1
 netParams.synMechParams['GABAA_VIP'] = {'mod':'MyExp2SynBB', 'tau1': 0.3, 'tau2': 6.4, 'e': -80}  # Pi et al 2013
 netParams.synMechParams['GABAASlow'] = {'mod': 'MyExp2SynBB','tau1': 2, 'tau2': 100, 'e': -80}
 netParams.synMechParams['GABAASlowSlow'] = {'mod': 'MyExp2SynBB', 'tau1': 200, 'tau2': 400, 'e': -80}
-netParams.synMechParams['NMDA_PV'] = {'mod': 'MyExp2SynNMDABB', 'tau1NMDA': 15, 'tau2NMDA': 150, 'sNMDAmax': cfg.NMDAmax, 'e': 0}
+netParams.synMechParams['NMDA_PV'] = {'mod': 'MyExp2SynNMDABB', 'tau1NMDA': 15, 'tau2NMDA': 150, 'sNMDAmax': 8e8, 'e': 0}
 
 
 
@@ -332,14 +332,15 @@ if cfg.addConn and cfg.EEGain > 0.0:
 if cfg.addConn and cfg.EIGain > 0.0:
     for pre in Epops:
         for post in Ipops:
+            if 'PV' in post:
+                curr_mech = EScz
+            else:
+                curr_mech = ESynMech
+            print(post, curr_mech)
             for postType in Itypes:
                 if postType in post: # only create rule if celltype matches pop
                     for l in layerGainLabels: # used to tune each layer group independently
                         scaleFactor = 1.0
-                        if 'PV' in post:
-                            curr_mech=EScz
-                        else:
-                            curr_mech=ESynMech
                         if connDataSource['E->E/I'] in ['Allen_V1', 'Allen_custom']:
                             prob = '%f * exp(-dist_2D/%f)' % (pmat[pre][post], lmat[pre][post])
                         else:
@@ -361,6 +362,8 @@ if cfg.addConn and cfg.EIGain > 0.0:
                                 scaleFactor = cfg.L4L3NGF#25
                             elif post=='VIP3':
                                 scaleFactor = cfg.L4L3VIP#25
+                    if synWeightFactor is None:
+                        print('is None')
                     netParams.connParams['EI_'+pre+'_'+post+'_'+postType+'_'+l] = {
                         'preConds': {'pop': pre},
                         'postConds': {'pop': post, 'cellType': postType, 'ynorm': layer[l]},
@@ -612,9 +615,15 @@ if cfg.addSubConn:
     # E -> I: soma, dendrite (all)
     netParams.subConnParams['E->I'] = {
         'preConds': {'cellType': ['IT', 'ITS4', 'PT', 'CT']},
-        'postConds': {'cellType': ['PV','SOM','NGF', 'VIP']},
+        'postConds': {'cellType': ['SOM','NGF', 'VIP']},
         'sec': 'all',
         'groupSynMechs': ESynMech,
+        'density': 'uniform'}
+    netParams.subConnParams['E->PV'] = {
+        'preConds': {'cellType': ['IT', 'ITS4', 'PT', 'CT']},
+        'postConds': {'cellType': ['PV']},
+        'sec': 'all',
+        'groupSynMechs': EScz,
         'density': 'uniform'}
 
     #------------------------------------------------------------------------------
