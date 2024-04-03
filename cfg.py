@@ -71,10 +71,10 @@ cfg.recordDipole = True
 # Saving
 # ------------------------------------------------------------------------------
 
-cfg.simLabel = 'Scz_tune_0320'
+cfg.simLabel = 'Scz_tune_0403'
 cfg.saveFolder = 'data/' + cfg.simLabel  ## Set file output name
-cfg.savePickle = False  ## Save pkl file
-cfg.saveJson = True  ## Save json file
+cfg.savePickle = True  ## Save pkl file
+cfg.saveJson = False ## Save json file
 cfg.saveDataInclude = ['simData', 'simConfig', 'netParams', 'net']
 cfg.backupCfgFile = None
 cfg.gatherOnlySimData = False
@@ -142,6 +142,14 @@ cfg.sizeY = 2000.0  # 1350.0 in M1_detailed # should this be set to 2000 since t
 cfg.sizeX = 200.0  # 400 - This may change depending on electrode radius
 cfg.sizeZ = 200.0
 cfg.scaleDensity = 1.0  # 0.25 #1.0 #0.075 # Should be 1.0 unless need lower cell density for test simulation or visualization
+
+cfg.PV3density = 0.7  # Multiplier to reduce layer based pop densities
+cfg.PV4density = 0.65 # Multiplier to reduce layer based pop densities
+cfg.SOM2density = 0.7 # Multiplier to reduce layer based pop densities
+cfg.SOM3density = 0.7 # Multiplier to reduce layer based pop densities
+cfg.SOM4density = 0.7 # Multiplier to reduce layer based pop densities
+cfg.SOM5density = 0.7 # Multiplier to reduce layer based pop densities
+cfg.SOM6density = 0.7 # Multiplier to reduce layer based pop densities
 
 # ------------------------------------------------------------------------------
 # Connectivity
@@ -232,7 +240,7 @@ cfg.alterSyn2 = 0
 cfg.alterSyn3 = 0
 
 # CxE --> PV NMDA alterations
-cfg.NMDAmax = 1e9 # sets the maximal NMDA conductance - Default is 1e9
+cfg.NMDAmax = 8e8 # sets the maximal NMDA conductance - Default is 1e9
 
 
 # full weight conn matrix

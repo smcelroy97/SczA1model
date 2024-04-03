@@ -30,14 +30,17 @@ class simTools:
 
         # Calculate EEG
         eeg = M @ p * 1e9
-        goodchan = eeg[38, :]
+        goodchan = eeg[48, :]
 
         onset = int(stimOn / 0.05)
         offset = int(end / 0.05)
         return goodchan, t
 
     def filterEEG(EEG, lowcut, highcut, fs, order):
-        b, a = butter(order, [lowcut, highcut], btype='band', fs=fs)
+        nyq = 0.5 * fs
+        low = lowcut / nyq
+        high = highcut / nyq
+        b, a = butter(order, [low, high], btype='band')
         filtered_signal = filtfilt(b, a, EEG)
         return filtered_signal
     def processRaster(spkTimes, spkGids):
@@ -75,7 +78,7 @@ class simTools:
 
         # Define freqs you care about
         minFreq = 1
-        maxFreq = 60
+        maxFreq = 80
 
         # Perform Morlet transform
         freqList = None
@@ -88,7 +91,6 @@ class simTools:
         T = time  # Time
         F = spec.f  # Define frequencies
         S = spec.TFR  # Spectral data for spectrogram
-        signal = 10 * (np.log10(np.mean(S, 1)))  # Use this for PSD plotting
 
         # Spectrogram plot params
         plt.figure(figsize=figsize)
@@ -107,7 +109,35 @@ class simTools:
         plt.savefig('/Users/scottmcelroy/A1_scz/A1_figs/SIMfigs/' + batch + '/' + fname + 'spect.png')
 
 
+    def plot_PSD(data, time, fname, batch, figsize = (20,20)):
+        # sampling frequency
+        fs = int(1000.0 / 0.05)
 
+        # Define freqs you care about
+        minFreq = 1
+        maxFreq = 60
+
+        # Perform Morlet transform
+        freqList = None
+        spec = (MorletSpec(data, fs, freqmin=minFreq, freqmax=maxFreq, freqstep=1, lfreq=freqList))
+
+        # Min and mox for the color of normalized power
+        vmin = spec.TFR.min()
+        vmax = spec.TFR.max()
+
+        T = time  # Time
+        F = spec.f  # Define frequencies
+        S = spec.TFR  # Spectral data for spectrogram
+        signal = 10 * (np.log10(np.mean(S, 1)))  # Use this for PSD plotting
+
+        # PSD plot params
+        plt.figure(figsize=figsize)
+        plt.xlabel('Time (s)')
+        plt.ylabel('Power')
+        plt.plot(F, signal)
+        if not os.path.exists('/Users/scottmcelroy/A1_scz/A1_figs/SIMfigs/' + batch):
+            os.mkdir('/Users/scottmcelroy/A1_scz/A1_figs/SIMfigs/' + batch)
+        plt.savefig('/Users/scottmcelroy/A1_scz/A1_figs/SIMfigs/' + batch + '/' + fname + 'PSD.png')
 
 
 
