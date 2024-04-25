@@ -30,7 +30,8 @@ class simTools:
 
         # Calculate EEG
         eeg = M @ p * 1e9
-        goodchan = eeg[48, :]
+        # goodchan = eeg[48, :]
+        goodchan = eeg[38]
 
         onset = int(stimOn / 0.05)
         offset = int(end / 0.05)
@@ -64,9 +65,10 @@ class simTools:
         return spk_gids, spk_times
     def plotERP(data, time, fname, batch, figsize = (30,20)):
         plt.figure(figsize=figsize)
-        plt.plot(time,data/1000, linewidth = 4)
+        plt.plot(time,data/1000, color='black', linewidth = 8)
+        plt.axhline(y=0, color='black',linestyle='-', linewidth = 4)
         plt.tick_params(labelsize=50)
-        plt.xlabel('Time (s)', fontsize = 65)
+        plt.xlabel('Time (ms)', fontsize = 65)
         plt.ylabel('uV', fontsize = 65)
         if not os.path.exists('/Users/scottmcelroy/A1_scz/A1_figs/SIMfigs/' + batch):
             os.mkdir('/Users/scottmcelroy/A1_scz/A1_figs/SIMfigs/' + batch)
@@ -94,8 +96,9 @@ class simTools:
 
         # Spectrogram plot params
         plt.figure(figsize=figsize)
-        plt.xlabel('Time (s)')
-        plt.ylabel('Frequency (Hz)')
+        plt.tick_params(labelsize=50)
+        plt.xlabel('Time (ms)', fontsize = 65)
+        plt.ylabel('Frequency (Hz)', fontsize = 65)
         plt.imshow(S, extent=(np.amin(T), np.amax(T), np.amin(F), np.amax(F)),
                    origin='lower',
                    interpolation='None',

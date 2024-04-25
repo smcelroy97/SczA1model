@@ -71,7 +71,7 @@ cfg.recordDipole = True
 # Saving
 # ------------------------------------------------------------------------------
 
-cfg.simLabel = 'Scz_tune_0403'
+cfg.simLabel = 'Scz_tune_0425'
 cfg.saveFolder = 'data/' + cfg.simLabel  ## Set file output name
 cfg.savePickle = True  ## Save pkl file
 cfg.saveJson = False ## Save json file
@@ -143,10 +143,10 @@ cfg.sizeX = 200.0  # 400 - This may change depending on electrode radius
 cfg.sizeZ = 200.0
 cfg.scaleDensity = 1.0  # 0.25 #1.0 #0.075 # Should be 1.0 unless need lower cell density for test simulation or visualization
 
-cfg.PV3density = 0.7  # Multiplier to reduce layer based pop densities
+cfg.PV3density = 0.71  # Multiplier to reduce layer based pop densities
 cfg.PV4density = 0.65 # Multiplier to reduce layer based pop densities
-cfg.SOM2density = 0.7 # Multiplier to reduce layer based pop densities
-cfg.SOM3density = 0.7 # Multiplier to reduce layer based pop densities
+cfg.SOM2density = 0.634 # Multiplier to reduce layer based pop densities
+cfg.SOM3density = 0.704 # Multiplier to reduce layer based pop densities
 cfg.SOM4density = 0.7 # Multiplier to reduce layer based pop densities
 cfg.SOM5density = 0.7 # Multiplier to reduce layer based pop densities
 cfg.SOM6density = 0.7 # Multiplier to reduce layer based pop densities
@@ -238,6 +238,8 @@ cfg.addSubConn = 1
 cfg.alterSyn = 0
 cfg.alterSyn2 = 0
 cfg.alterSyn3 = 0
+
+cfg.L2RecExcLoc = 1.0
 
 # CxE --> PV NMDA alterations
 cfg.NMDAmax = 8e8 # sets the maximal NMDA conductance - Default is 1e9

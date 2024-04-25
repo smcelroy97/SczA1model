@@ -8,6 +8,7 @@ Contributors: ericaygriffith@gmail.com, salvadordura@gmail.com
 
 from netpyne import specs
 import pickle, json
+import random
 
 netParams = specs.NetParams()   # object of class NetParams to store the network parameters
 
@@ -73,7 +74,7 @@ layerGroups = { '1-3': [layer['1'][0], layer['3'][1]],  # L1-3
 #------------------------------------------------------------------------------
 ## Load cell rules previously saved using netpyne format (DOES NOT INCLUDE VIP, NGF and spiny stellate)
 ## include conditions ('conds') for each cellRule
-cellParamLabels = ['IT2_reduced', 'IT3_reduced', 'ITP4_reduced', 'ITS4_reduced',
+cellParamLabels = ['IT3_reduced', 'ITP4_reduced', 'ITS4_reduced',
                     'IT5A_reduced', 'CT5A_reduced', 'IT5B_reduced',
                     'PT5B_reduced', 'CT5B_reduced', 'IT6_reduced', 'CT6_reduced',
                     'PV_reduced', 'SOM_reduced', 'VIP_reduced', 'NGF_reduced',
@@ -82,7 +83,7 @@ cellParamLabels = ['IT2_reduced', 'IT3_reduced', 'ITP4_reduced', 'ITS4_reduced',
 for ruleLabel in cellParamLabels:
     netParams.loadCellParamsRule(label=ruleLabel, fileName='cells/' + ruleLabel + '_cellParams.json')  # Load cellParams for each of the above cell subtype
 
-
+netParams.loadCellParamsRule(label='IT2_reduced', fileName='cells/IT2_reduced_cellParams_nseg.json')
 
 # ## Reduce T-type calcium channel conductances (cfg.tTypeCorticalFactor ; cfg.tTypeThalamicFactor)
 # for cellLabel in ['TC_reduced', 'HTC_reduced', 'RE_reduced']:
@@ -315,6 +316,7 @@ if cfg.addConn and cfg.EEGain > 0.0:
                 if pre=='ITS4' or pre=='ITP4':
                     if post=='IT3':
                         scaleFactor = cfg.L4L3E#25
+
                 netParams.connParams['EE_'+pre+'_'+post+'_'+l] = {
                     'preConds': {'pop': pre},
                     'postConds': {'pop': post, 'ynorm': layer[l]},
@@ -587,8 +589,42 @@ if cfg.addSubConn:
         'preConds': {'cellType': ['IT', 'ITS4', 'PT', 'CT']},
         'postConds': {'pops': ['IT2']},
         'sec': 'Bdend',
+        'loc': cfg.L2RecExcLoc,
         'groupSynMechs': ESynMech,
         'density': 'uniform'}
+
+    # Define the y location range
+    # y_min = 0.343  # Minimum y location
+    # y_max = 0.475  # Maximum y location
+    #
+    # # Prob of synapse removal
+    # synapse_removal_probability = 0.272
+    # for key in netParams.subConnParams.keys():
+    #     if 'IT3' in netParams.subConnParams['E->3,4']['postConds']['pops']:
+    #         post_pop = netParams.popParams[netParams.subConnParams[key]['postConds']['pops'][0]]
+    #         print(post_pop)
+    #         # if y_min <= post_pop['ynormRange'][0] and post_pop['ynormRange'][1] <= y_max:
+    #         #     # Generate a random number for each synapse
+    #         #     print(post_pop['ynormRange'])
+    #         if random.random() < synapse_removal_probability:
+    #             print(random.random())
+    #             netParams.subConnParams[key]['postConds']['pops']['weight'] = 0
+
+    # for key in netParams.subConnParams.keys():
+    #     if 'IT3' in netParams.subConnParams[key]['postConds']['pops']:
+    #         if netParams.subConnParams[key]['groupSynMechs'] == ESynMech:
+    #             # Get the post-synaptic population
+    #             print(key)
+    #             post_pop = netParams.popParams[netParams.subConnParams[key]['postConds']['pops'][0]]
+    #
+    #             # Check if the y location of the cells in the post-synaptic population is within the range
+    #             if y_min <= post_pop['ynormRange'][0] and post_pop['ynormRange'][1] <= y_max:
+    #                 # Generate a random number for each synapse
+    #                 print(post_pop['ynormRange'])
+    #                 if random.random() < synapse_removal_probability:
+    #                     print(random.random())
+    #                     netParams.subConnParams[key]['postConds']['pops'].remove('IT3')
+
 
     #------------------------------------------------------------------------------
     # E -> E5,6: soma,dendrites (all)
