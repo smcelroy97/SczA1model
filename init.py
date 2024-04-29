@@ -50,13 +50,10 @@ def pruneSynapses(cell, conn, probability, pruning_range):
 
     # Calculate the 3D coordinates relative to the network
     y_net = syn_rel + y_cell
-
     if pruning_range[1] > y_net > pruning_range[0]:
         if random.random() < probability:
-            n = 0
             cell.conns.remove(conn)
-            n = n+1
-    print(n)
+
 
 for cell in sim.net.cells:
     if cell.tags['pop'] in cfg.CorticalEPops:
