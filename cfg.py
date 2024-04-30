@@ -72,7 +72,7 @@ cfg.recordDipole = True
 # Saving
 # ------------------------------------------------------------------------------
 
-cfg.simLabel = 'Scz_tune_0429'
+cfg.simLabel = 'Scz_tune_0430'
 cfg.saveFolder = 'data/' + cfg.simLabel  ## Set file output name
 cfg.savePickle = True  ## Save pkl file
 cfg.saveJson = False ## Save json file

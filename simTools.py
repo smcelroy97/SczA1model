@@ -5,6 +5,7 @@ from netpyne.support.morlet import MorletSpec, index2ms
 import os
 import numpy as np
 import matplotlib
+import random
 matplotlib.use("MacOSX")
 from    matplotlib  import  pyplot  as plt
 
@@ -30,8 +31,8 @@ class simTools:
 
         # Calculate EEG
         eeg = M @ p * 1e9
-        # goodchan = eeg[48, :]
-        goodchan = eeg[38]
+        goodchan = eeg[48, :]
+        # goodchan = eeg[38]
 
         onset = int(stimOn / 0.05)
         offset = int(end / 0.05)
@@ -144,3 +145,25 @@ class simTools:
 
 
 
+class editNet:
+
+    def pruneSynapses(cell, conn, probability, pruning_range):
+        # Get the section
+        sec = cell.secs[conn['sec']]
+
+        # Get the 3D points of the section
+        points = sec['geom']['pt3d']
+
+        y1 = points[0][1]
+        y2 = points[1][1]
+
+        syn_rel = conn['loc'] * (y2 - y1)
+
+        # Get the position of the cell within the network
+        y_cell = cell.tags['y']
+
+        # Calculate the 3D coordinates relative to the network
+        y_net = syn_rel + y_cell
+        if pruning_range[1] > y_net > pruning_range[0]:
+            if random.random() < probability:
+                cell.conns.remove(conn)
