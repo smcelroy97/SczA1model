@@ -6,7 +6,7 @@ import os
 import numpy as np
 import matplotlib
 import random
-matplotlib.use("MacOSX")
+# matplotlib.use("MacOSX")
 from    matplotlib  import  pyplot  as plt
 
 
