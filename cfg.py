@@ -46,7 +46,7 @@ cfg.validateNetParams = False
 cfg.allpops = ['NGF1', 'IT2', 'SOM2', 'PV2', 'VIP2', 'NGF2', 'IT3', 'SOM3', 'PV3', 'VIP3', 'NGF3', 'ITP4', 'ITS4',
                'SOM4', 'PV4', 'VIP4', 'NGF4', 'IT5A', 'CT5A', 'SOM5A', 'PV5A', 'VIP5A', 'NGF5A', 'IT5B', 'PT5B', 'CT5B',
                'SOM5B', 'PV5B', 'VIP5B', 'NGF5B', 'IT6', 'CT6', 'SOM6', 'PV6', 'VIP6', 'NGF6', 'TC', 'TCM', 'HTC',
-               'IRE', 'IREM', 'TI', 'TIM', 'IC']
+               'IRE', 'IREM', 'TI', 'TIM', 'IC', 'cochlea']
 cfg.allCorticalPops = ['NGF1', 'IT2', 'SOM2', 'PV2', 'VIP2', 'NGF2', 'IT3', 'SOM3', 'PV3', 'VIP3', 'NGF3', 'ITP4',
                        'ITS4', 'SOM4', 'PV4', 'VIP4', 'NGF4', 'IT5A', 'CT5A', 'SOM5A', 'PV5A', 'VIP5A', 'NGF5A', 'IT5B',
                        'PT5B', 'CT5B', 'SOM5B', 'PV5B', 'VIP5B', 'NGF5B', 'IT6', 'CT6', 'SOM6', 'PV6', 'VIP6', 'NGF6']
@@ -173,15 +173,15 @@ cfg.IELayerGain = {'1': 1.0, '2': 1.0, '3': 1.0, '4': 1.0, '5A': 1.0, '5B': 1.0,
 cfg.IILayerGain = {'1': 1.0, '2': 1.0, '3': 1.0, '4': 1.0, '5A': 1.0, '5B': 1.0, '6': 1.0}
 
 # E -> E based on postsynaptic cortical E neuron population
-cfg.EEPopGain = {'IT2': 0.5, 'IT3': 1.75, 'ITP4': 1.0, 'ITS4': 1.0, 'IT5A': 1.05, 'CT5A': 1.1500000000000001,
-                 'IT5B': 0.425, 'CT5B': 1.1500000000000001, 'PT5B': 1.05, 'IT6': 1.05,
-                 'CT6': 1.05}  # this is from after generation 203 of optunaERP_23dec23_ , values used in
+cfg.EEPopGain = {"IT2": 1.3125, "IT3": 1.55, "ITP4": 1.0, "ITS4": 1.0, "IT5A": 1.05,
+                 "CT5A": 1.1500000000000001, "IT5B": 0.425, "CT5B": 1.1500000000000001,
+                 "PT5B": 1.05, "IT6": 1.05, "CT6": 1.05} # this is from after generation 203 of optunaERP_23dec23_
 
 # gains from E -> I based on postsynaptic cortical I neuron population
-cfg.EIPopGain = {'NGF1': 0.1, 'SOM2': 1.0, 'PV2': 1.0, 'VIP2': 1.0, 'NGF2': 0.1, 'SOM3': 0.25, 'PV3': 0.15,
-                 'VIP3': 0.25, 'NGF3': 0.1, 'SOM4': 0.5, 'PV4': 0.5, 'VIP4': 1.0, 'NGF4': 0.1, 'SOM5A': 1.0,
-                 'PV5A': 1.0, 'VIP5A': 1.0, 'NGF5A': 1.0, 'SOM5B': 1.0, 'PV5B': 1.0, 'VIP5B': 1.0, 'NGF5B': 1.0,
-                 'SOM6': 1.0, 'PV6': 1.0, 'VIP6': 1.0, 'NGF6': 1.0}
+cfg.EIPopGain = {"NGF1": 1.0, "SOM2": 1.0, "PV2": 1.0, "VIP2": 1.0, "NGF2": 1.0, "SOM3": 1.0, "PV3": 1.0, "VIP3": 1.0,
+                 "NGF3": 1.0, "SOM4": 1.0, "PV4": 1.0, "VIP4": 1.0, "NGF4": 1.0, "SOM5A": 1.0, "PV5A": 1.4,
+                 "VIP5A": 1.25, "NGF5A": 0.8, "SOM5B": 1.0, "PV5B": 1.45, "VIP5B": 1.4, "NGF5B": 0.9500000000000001,
+                 "SOM6": 1.0, "PV6": 1.4, "VIP6": 1.3499999999999999, "NGF6": 0.65}
 
 ## E->I by target cell type
 cfg.EICellTypeGain = {'PV': 1.0, 'SOM': 1.0, 'VIP': 1.0,
@@ -200,22 +200,32 @@ cfg.intraThalamicGain = 1.0
 cfg.corticoThalamicGain = 1.0
 
 # these params control IC -> Thalamic Core
-cfg.ICThalweightECore = 2.5  # 1.0
-cfg.ICThalweightICore = 0.75  # 0.25
-cfg.ICThalprobECore = 0.16
-cfg.ICThalprobICore = 0.09
+cfg.ICThalweightECore = 0.8350476447841453
+cfg.ICThalweightICore = 0.2114492149101151
+cfg.ICThalprobECore = 0.163484173596043
+cfg.ICThalprobICore = 0.0936669688856933
 
 # these params control IC -> Thalamic Matrix
 cfg.ICThalMatrixCoreFactor = 0.1
-cfg.ICThalweightEMatrix = cfg.ICThalweightECore * cfg.ICThalMatrixCoreFactor
-cfg.ICThalweightIMatrix = cfg.ICThalweightICore * cfg.ICThalMatrixCoreFactor
+# cfg.ICThalweightEMatrix = cfg.ICThalweightECore * cfg.ICThalMatrixCoreFactor
+# cfg.ICThalweightIMatrix = cfg.ICThalweightICore * cfg.ICThalMatrixCoreFactor
 cfg.ICThalprobEMatrix = cfg.ICThalprobECore
 cfg.ICThalprobIMatrix = cfg.ICThalprobICore
 
+# these params control cochlea -> Thalamus
+cfg.cochThalweightECore = 0.4
+cfg.cochThalweightICore = 0.1
+cfg.cochThalprobECore = 0.16
+cfg.cochThalprobICore = 0.09
+cfg.cochThalMatrixCoreFactor = 0.1
+cfg.cochThalprobEMatrix = cfg.cochThalprobECore
+cfg.cochThalprobIMatrix = cfg.cochThalprobICore
+cfg.cochThalFreqRange = [9600, 10400]
+
 # these params added from Christoph Metzner branch
-cfg.thalL4PV = 0.075  # 0.5
-cfg.thalL4SOM = 0.25  # 0.5
-cfg.thalL4E = 2.5  # 1.0
+cfg.thalL4PV = 0.21367245896786016
+cfg.thalL4SOM = 0.24260966747847523
+cfg.thalL4E = 1.9540886147587417
 
 cfg.thalL4VIP = 1.0
 cfg.thalL4NGF = 1.0
@@ -223,11 +233,12 @@ cfg.thalL4NGF = 1.0
 cfg.thalL1NGF = 1.0
 cfg.ENGF1 = 1.0
 
-cfg.L4L3E = 2.0
-cfg.L4L3PV = 0.1
+# Modulate strength of connections from L4 -> L3 by different target subpops
+cfg.L4L3E = 1.0
+cfg.L4L3PV = 1.0
 cfg.L4L3SOM = 1.0
 
-cfg.L4L3VIP = 0.1
+cfg.L4L3VIP = 1.0
 cfg.L4L3NGF = 1.0
 
 cfg.artFB = 1
@@ -239,8 +250,6 @@ cfg.addSubConn = 1
 cfg.alterSyn = 0
 cfg.alterSyn2 = 0
 cfg.alterSyn3 = 0
-
-cfg.L2RecExcLoc = 1.0
 
 # CxE --> PV NMDA alterations
 cfg.NMDAmax = 8e8 # sets the maximal NMDA conductance - Default is 1e9
@@ -270,9 +279,21 @@ cfg.rateBkg = {'exc': 40, 'inh': 40}
 cfg.EbkgThalamicGain = 4.0
 cfg.IbkgThalamicGain = 4.0
 
-cfg.cochlearThalInput = False  # {'numCells': 200, 'freqRange': [9*1e3, 11*1e3], 'toneFreq': 10*1e3, 'loudnessDBs': 50}
+cfg.cochlearThalInput = True # {'numCells': 200, 'freqRange': [9*1e3, 11*1e3], 'toneFreq': 10*1e3, 'loudnessDBs': 50}
 # parameters to generate realistic  auditory thalamic inputs using Brian Hears
 
+if cochlearThalInput:
+  cfg.cochlearThalInput = {"numCenterFreqs": 100, "freqRange": cfg.cochThalFreqRange, "loudnessDBs": 50, "fnwave":"40Hz_click_train.wav"}
+  cti = cfg.cochlearThalInput
+  cti['probECore'] = cfg.cochThalprobECore
+  cti['weightECore'] = cfg.cochThalweightECore
+  cti['probICore'] = cfg.cochThalprobICore
+  cti['weightICore'] = cfg.cochThalweightICore
+  cti['probEMatrix'] = cfg.cochThalprobEMatrix
+  cti['probIMatrix'] = cfg.cochThalprobIMatrix
+  cti['MatrixCoreFactor'] = cfg.cochThalMatrixCoreFactor
+else:
+  cfg.cochlearThalInput = False
 # ------------------------------------------------------------------------------
 # Current inputs
 # ------------------------------------------------------------------------------
